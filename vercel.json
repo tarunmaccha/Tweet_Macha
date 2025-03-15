@@ -14,8 +14,9 @@
     ],
     "rewrites": [
         {
-            "source": "/",
-            "destination": "/tweet/"
+            "source": "/tweet/(.*)",
+            "destination": "/"
         }
     ]
 }
+
