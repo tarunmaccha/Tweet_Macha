@@ -1,4 +1,5 @@
 {
+    "version": 2,
     "builds": [
         {
             "src": "machaheadq/wsgi.py",
@@ -11,13 +12,12 @@
     ],
     "routes": [
         {
-            "src": "/tweet/(.*)",
+            "src": "/tweet/.*",
             "dest": "machaheadq/wsgi.py"
         },
         {
-            "src": "/(.*)",
-            "status": 404,
-            "dest": "/404.html"
+            "src": "/.*",
+            "dest": "machaheadq/wsgi.py"
         }
     ]
 }
