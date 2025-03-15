@@ -8,15 +8,8 @@
     ],
     "routes": [
         {
-            "src": "/tweet/(.*)",
+            "src": "/tweet/?",
             "dest": "machaheadq/wsgi.py"
-        },
-        {
-            "src": "/",
-            "status": 308,
-            "headers": {
-                "Location": "/tweet/"
-            }
         }
     ]
 }
