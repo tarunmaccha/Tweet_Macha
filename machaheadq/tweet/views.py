@@ -92,3 +92,9 @@ def tweet_search(request):
         })
 
     return JsonResponse(tweets_list, safe=False)
+from django.shortcuts import render
+
+# Assuming you want to render a template for the tweet view
+def tweet_view(request):
+    # Your logic for handling the view (can be empty if just rendering a template)
+    return render(request, 'index.html')  # Use the template you prefer
