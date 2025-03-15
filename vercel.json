@@ -1,22 +1,16 @@
 {
     "version": 2,
     "builds": [
-        {
-            "src": "machaheadq/wsgi.py",
-            "use": "@vercel/python"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "machaheadq/wsgi.py"
-        }
+      {
+        "src": "machaheadq/wsgi.py",
+        "use": "@vercel/python"
+      }
     ],
     "rewrites": [
-        {
-            "source": "/tweet/(.*)",
-            "destination": "/"
-        }
+      {
+        "source": "/tweet/(.*)",
+        "destination": "/"
+      }
     ]
-}
-
+  }
+  
