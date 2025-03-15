@@ -1,0 +1,12 @@
+{
+    "builds" : [{
+        "src" :"machaheadq/wsgi.py",
+        "use" : "@versel/python",
+        "config" :{"maxLambdaSize": "15mb", "runtime": "python3.11" }
+        }],
+        "routes" : [{
+            "src" : "/(.*)",
+            "dest" : "machaheadq/wsgi.py" 
+        }]
+
+}

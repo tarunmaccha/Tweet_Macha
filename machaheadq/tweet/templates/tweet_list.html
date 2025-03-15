@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+macha ki elimudhra
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center text-white m-4">TWEET KOTTU BROtheruu</h1>
+
+<!-- 🔍 Integrated Navbar Search Bar -->
+<form class="d-flex mb-4" role="search" action="{% url 'tweet_search' %}" method="get">
+    <input id="search-input" class="form-control me-2" type="search" name="q" placeholder="Search tweets..." aria-label="Search" autocomplete="off">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+<div id="search-suggestions" class="list-group position-absolute" style="z-index: 1000;"></div>
+
+<a class="btn btn-primary mb-4" href="{% url 'tweet_create' %}">Create a tweet</a>
+
+<!-- 🐦 Tweets Grid -->
+<div class="container row gap-3" id="tweets-grid">
+    {% for tweet in tweets %}
+    <div class="card tweet-card" style="width: 18rem;" data-id="{{ tweet.id }}">
+        {% if tweet.photo and tweet.photo.url %}
+            <img src="{{ tweet.photo.url }}" class="card-img-top" alt="{{ tweet.user.username }}">
+        {% else %}
+            <img src="{% static 'default.jpg' %}" class="card-img-top" alt="No Image">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ tweet.user.username }}</h5>
+            <p class="card-text">{{ tweet.text }}</p>
+            {% if tweet.user == user %}
+            <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
+            {% endif %} 
+        </div>
+    </div>
+    {% endfor %} 
+</div>
+
+<!-- ✅ JavaScript for Real-time Search -->
+<script>
+document.getElementById('search-input').addEventListener('keyup', function() {
+    const query = this.value;
+    const suggestionsBox = document.getElementById('search-suggestions');
+    const tweetsGrid = document.getElementById('tweets-grid');
+
+    if (query.trim() === '') {
+        suggestionsBox.innerHTML = '';
+        return;
+    }
+
+    fetch(`/tweet/search/?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            // Show suggestions
+            suggestionsBox.innerHTML = '';
+            data.forEach(tweet => {
+                const suggestionItem = document.createElement('a');
+                suggestionItem.href = '#';
+                suggestionItem.classList.add('list-group-item', 'list-group-item-action');
+                suggestionItem.textContent = tweet.text;
+                suggestionItem.onclick = () => highlightTweet(tweet.id);
+                suggestionsBox.appendChild(suggestionItem);
+            });
+
+            // Reorder tweets - matched first
+            let tweetsHTML = '';
+            data.forEach(tweet => {
+                tweetsHTML += `
+                    <div class="card tweet-card" style="width: 18rem;" data-id="${tweet.id}">
+                        <img src="${tweet.photo_url || '/static/default.jpg'}" class="card-img-top" alt="${tweet.user}">
+                        <div class="card-body">
+                            <h5 class="card-title">${tweet.user}</h5>
+                            <p class="card-text">${tweet.text}</p>
+                        </div>
+                    </div>`;
+            });
+            tweetsGrid.innerHTML = tweetsHTML;
+        });
+});
+
+function highlightTweet(tweetId) {
+    const tweetCards = document.querySelectorAll('.tweet-card');
+    tweetCards.forEach(card => {
+        if (card.getAttribute('data-id') == tweetId) {
+            card.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+</script>
+
+{% endblock %}
