@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "builds": [
         {
             "src": "machaheadq/wsgi.py",
@@ -12,12 +11,13 @@
     ],
     "routes": [
         {
-            "src": "/(.*)",
+            "src": "/tweet/(.*)",
             "dest": "machaheadq/wsgi.py"
+        },
+        {
+            "src": "/(.*)",
+            "status": 404,
+            "dest": "/404.html"
         }
-    ],
-    "env": {
-        "DJANGO_SETTINGS_MODULE": "machaheadq.settings",
-        "PYTHONUNBUFFERED": "1"
-    }
+    ]
 }
