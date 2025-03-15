@@ -8,8 +8,14 @@
     ],
     "routes": [
         {
-            "src": "/tweet/?",
+            "src": "/(.*)",
             "dest": "machaheadq/wsgi.py"
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/",
+            "destination": "/tweet/"
         }
     ]
 }
